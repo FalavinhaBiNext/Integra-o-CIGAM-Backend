@@ -17,9 +17,6 @@ services:
       # CIGAM_API_TOKEN: ${CIGAM_API_TOKEN:-}
     expose:
       - "3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
     volumes:
       - uploads_data:/app/uploads
     restart: unless-stopped
