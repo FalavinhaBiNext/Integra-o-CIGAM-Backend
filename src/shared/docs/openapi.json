@@ -1,0 +1,404 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Integração Cigam API",
+    "description": "API de Integração com o ERP Cigam para gestão de boletos, empresas, usuários, módulos e integrações.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api/v1",
+      "description": "Servidor Local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Insira o token JWT gerado no login."
+      }
+    },
+    "schemas": {
+      "LoginInput": {
+        "type": "object",
+        "required": ["email", "senha"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "admin@empresa.com"
+          },
+          "senha": {
+            "type": "string",
+            "example": "123456"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "string", "format": "uuid" },
+              "nome": { "type": "string" },
+              "email": { "type": "string" },
+              "role": { "type": "string" },
+              "company_id": { "type": "string", "format": "uuid" }
+            }
+          }
+        }
+      },
+      "Boleto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "company_id": { "type": "string", "format": "uuid" },
+          "cnpj_cliente": { "type": "string" },
+          "empresa": { "type": "string" },
+          "telefone": { "type": "string" },
+          "contato": { "type": "string" },
+          "nome_arquivo": { "type": "string" },
+          "num_lancamento": { "type": "string" },
+          "vencimento": { "type": "string", "format": "date", "nullable": true },
+          "valor": { "type": "string", "nullable": true },
+          "codigo_empresa": { "type": "string", "nullable": true },
+          "data_recebimento": { "type": "string", "format": "date-time", "nullable": true },
+          "active": { "type": "boolean" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "updated_at": { "type": "string", "format": "date-time" }
+        }
+      },
+      "AppError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "message": { "type": "string" },
+              "details": { "type": "object" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Realiza login no sistema",
+        "tags": ["Autenticação"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados de entrada inválidos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Credenciais inválidas"
+          }
+        }
+      }
+    },
+    "/companies/health": {
+      "get": {
+        "summary": "Health check do serviço de empresas",
+        "tags": ["Empresas"],
+        "responses": {
+          "200": {
+            "description": "Serviço operacional",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean", "example": true },
+                    "status": { "type": "string", "example": "ok" },
+                    "service": { "type": "string", "example": "Company Services" },
+                    "message": { "type": "string", "example": "Rota Company Rodando" },
+                    "timestamp": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/boletos": {
+      "get": {
+        "summary": "Lista todos os boletos",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Lista obtida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Boleto"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/boletos/company/{companyId}": {
+      "get": {
+        "summary": "Lista todos os boletos de uma empresa",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista obtida com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Boleto"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/boletos/{id}": {
+      "get": {
+        "summary": "Busca boleto por ID",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Boleto encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Boleto"
+                }
+              }
+            }
+          },
+          "404": { "description": "Boleto não encontrado" },
+          "401": { "description": "Não autorizado" }
+        }
+      },
+      "put": {
+        "summary": "Atualiza dados de um boleto",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cnpj_cliente": { "type": "string" },
+                  "empresa": { "type": "string" },
+                  "telefone": { "type": "string" },
+                  "contato": { "type": "string" },
+                  "vencimento": { "type": "string", "format": "date", "nullable": true },
+                  "valor": { "type": "string", "nullable": true }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Boleto atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Boleto"
+                }
+              }
+            }
+          },
+          "404": { "description": "Boleto não encontrado" },
+          "401": { "description": "Não autorizado" }
+        }
+      },
+      "delete": {
+        "summary": "Remove um boleto fisicamente do banco de dados e disco",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Boleto excluído com sucesso" },
+          "404": { "description": "Boleto não encontrado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/boletos/upload": {
+      "post": {
+        "summary": "Faz o upload de um arquivo PDF de boleto",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file", "company_id", "cnpj_cliente", "empresa", "telefone", "contato", "num_lancamento"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo PDF do boleto"
+                  },
+                  "company_id": { "type": "string", "format": "uuid" },
+                  "cnpj_cliente": { "type": "string" },
+                  "empresa": { "type": "string" },
+                  "telefone": { "type": "string" },
+                  "contato": { "type": "string" },
+                  "num_lancamento": { "type": "string" },
+                  "vencimento": { "type": "string", "format": "date" },
+                  "valor": { "type": "string" },
+                  "codigo_empresa": { "type": "string" },
+                  "data_recebimento": { "type": "string", "format": "date-time" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Upload realizado e boleto criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Boleto"
+                }
+              }
+            }
+          },
+          "400": { "description": "Requisição inválida ou arquivo ausente" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/boletos/download/{id}": {
+      "get": {
+        "summary": "Baixa o arquivo PDF de um boleto pelo seu ID",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Arquivo PDF retornado para download",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": { "description": "Arquivo ou boleto não encontrado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    },
+    "/boletos/{id}/ativo": {
+      "patch": {
+        "summary": "Altera o status ativo do boleto (inativação lógica)",
+        "tags": ["Boletos"],
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Status alterado com sucesso" },
+          "404": { "description": "Boleto não encontrado" },
+          "401": { "description": "Não autorizado" }
+        }
+      }
+    }
+  }
+}
