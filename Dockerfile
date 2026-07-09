@@ -20,7 +20,7 @@ RUN npm ci --omit=dev
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/src/database/config ./dist/database/config
 COPY --from=build /app/src/database/migrations ./dist/database/migrations
-COPY --from=build /app/src/database/seeders ./dist/database/seeders
+# COPY --from=build /app/src/database/seeders ./dist/database/seeders
 
 RUN mkdir -p uploads/pdfs
 
