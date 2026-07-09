@@ -9,6 +9,7 @@ RUN npm ci --include=dev
 
 COPY . .
 RUN npm run build
+RUN cp -r src/database/migrations dist/database/migrations
 
 FROM node:22-alpine AS production
 
@@ -23,8 +24,7 @@ RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
 
-RUN mkdir -p uploads/pdfs
-RUN mkdir -p dist/database/seeders
+RUN mkdir -p uploads/pdfs dist/database/migrations dist/database/seeders
 
 EXPOSE 3000
 
