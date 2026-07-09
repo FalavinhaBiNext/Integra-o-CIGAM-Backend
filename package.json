@@ -11,6 +11,7 @@
     "test:coverage": "jest --coverage",
     "sequelize": "sequelize-cli",
     "db:migrate": "sequelize db:migrate --env production",
+    "seed": "node dist/shared/scripts/seed-superadmin.js",
     "start": "node dist/server.js"
   },
   "_moduleAliases": {

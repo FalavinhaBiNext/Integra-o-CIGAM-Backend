@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import 'module-alias/register';
 import { CompanyModel } from '@/database/models/Company';
 import { UsuarioModel } from '@/database/models/Usuario';
 import { ModuloModel } from '@/database/models/Modulo';
@@ -10,10 +11,10 @@ async function seed() {
 
     // 1. Create or Find control company
     let [company] = await CompanyModel.findOrCreate({
-      where: { cnpj: '00000000000000' },
+      where: { cnpj: '19175829000153' },
       defaults: {
-        nome: 'SaaS Control',
-        cnpj: '00000000000000',
+        nome: 'FALAVINHA NEXT CONSULTORIA EM INTELIGENCIA DE NEGOCIOS',
+        cnpj: '19175829000153',
         active: true
       }
     });
@@ -22,11 +23,11 @@ async function seed() {
     // 2. Create or Find Super Admin User
     const hashedPassword = await bcrypt.hash('admin123', 10);
     let [user, created] = await UsuarioModel.findOrCreate({
-      where: { email: 'superadmin@saas.com' },
+      where: { email: 'desenvolvimento@admin.com' },
       defaults: {
         company_id: company.id,
-        nome: 'Super Administrador',
-        email: 'superadmin@saas.com',
+        nome: 'Desenvolvimento',
+        email: 'desenvolvimento@admin.com',
         senha: hashedPassword,
         role: 'SUPERADMIN',
         active: true
@@ -63,14 +64,13 @@ async function seed() {
     console.log('Módulos padrão semeados.');
 
     console.log('\n--- CREDENCIAIS DO SUPERADMIN ---');
-    console.log('E-mail: superadmin@saas.com');
+    console.log('E-mail: desenvolvimento@admin.com');
     console.log('Senha: admin123');
     console.log('---------------------------------\n');
 
-    process.exit(0);
+    console.log('=== SEED FINALIZADO ===');
   } catch (error: any) {
     console.error('Erro durante o seeding:', error.message);
-    process.exit(1);
   }
 }
 
