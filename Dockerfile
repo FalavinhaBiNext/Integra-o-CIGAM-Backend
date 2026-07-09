@@ -31,4 +31,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
 RUN echo 'const path = require("path"); module.exports = { config: path.resolve("dist", "database", "config", "database.js"), "models-path": path.resolve("dist", "database", "models"), "seeders-path": path.resolve("dist", "database", "seeders"), "migrations-path": path.resolve("dist", "database", "migrations") };' > .sequelizerc
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["sh", "-c", "npx sequelize db:migrate && node dist/server.js"]
+CMD ["sh", "-c", "npm run db:migrate && npm run start"]
