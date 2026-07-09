@@ -18,6 +18,9 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/src/database/config ./dist/database/config
+COPY --from=build /app/src/database/migrations ./dist/database/migrations
+COPY --from=build /app/src/database/seeders ./dist/database/seeders
 
 RUN mkdir -p uploads/pdfs
 
@@ -28,7 +31,13 @@ ENV NODE_ENV=production
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', r => {process.exit(r.statusCode === 200 ? 0 : 1)}).on('error', () => process.exit(1))"
 
-RUN echo 'const path = require("path"); module.exports = { config: path.resolve("dist", "database", "config", "database.js"), "models-path": path.resolve("dist", "database", "models"), "seeders-path": path.resolve("dist", "database", "seeders"), "migrations-path": path.resolve("dist", "database", "migrations") };' > .sequelizerc
+RUN echo 'const path = require("path");' > .sequelizerc && \
+    echo 'module.exports = {' >> .sequelizerc && \
+    echo '  config: path.resolve("dist", "database", "config", "database.js"),' >> .sequelizerc && \
+    echo '  "models-path": path.resolve("dist", "database", "models"),' >> .sequelizerc && \
+    echo '  "seeders-path": path.resolve("dist", "database", "seeders"),' >> .sequelizerc && \
+    echo '  "migrations-path": path.resolve("dist", "database", "migrations")' >> .sequelizerc && \
+    echo '};' >> .sequelizerc
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["sh", "-c", "npm run db:migrate && npm run start"]
