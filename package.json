@@ -10,7 +10,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "sequelize": "sequelize-cli",
-    "db:migrate": "sequelize-cli db:migrate --env production",
+    "db:migrate": "sequelize db:migrate --env production",
     "start": "node dist/server.js"
   },
   "dependencies": {
@@ -24,6 +24,8 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.2.0",
+    "pg": "^8.22.0",
+    "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.0",
     "sequelize-cli": "^6.6.5",

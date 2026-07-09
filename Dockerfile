@@ -18,8 +18,8 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/src/database/config ./dist/database/config
 COPY --from=build /app/src/database/migrations ./dist/database/migrations
+COPY startup.cjs ./startup.cjs
 # COPY --from=build /app/src/database/seeders ./dist/database/seeders
 
 RUN mkdir -p uploads/pdfs
@@ -40,4 +40,4 @@ RUN echo 'const path = require("path");' > .sequelizerc && \
     echo '};' >> .sequelizerc
 
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["sh", "-c", "npm run db:migrate && npm run start"]
+CMD ["node", "startup.cjs"]

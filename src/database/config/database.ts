@@ -8,7 +8,7 @@ interface DbConfig {
   };
 }
 
-const shouldUseSsl = process.env.DB_SSL === 'true';
+const shouldUseSsl = process.env.DB_SSL === 'false';
 
 const config: DbConfig = {
   development: {
@@ -24,23 +24,13 @@ const config: DbConfig = {
   },
 
   production: {
-    use_env_variable: 'DATABASE_URL',
     dialect: 'postgres',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT) || 5432,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
     logging: false,
-    pool: {
-      max: Number(process.env.DB_POOL_MAX) || 10,
-      min: Number(process.env.DB_POOL_MIN) || 2,
-      acquire: Number(process.env.DB_POOL_ACQUIRE) || 30000,
-      idle: Number(process.env.DB_POOL_IDLE) || 10000,
-    },
-    dialectOptions: shouldUseSsl
-      ? {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false,
-          },
-        }
-      : {},
   },
 };
 
