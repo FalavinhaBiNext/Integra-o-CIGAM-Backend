@@ -7,7 +7,7 @@ import { usuarioRoutes } from '@/modules/usuario/routes/usuario.routes';
 import { moduloRoutes } from '@/modules/modulo/routes/modulo.routes';
 import { companyModuloRoutes } from '@/modules/company-modulo/routes/company-modulo.routes';
 import { companyIntegrationRoutes } from '@/modules/company-integration/routes/company-integration.routes';
-import { boletoRoutes } from '@/modules/boleto/routes/boleto.routes';
+import { boletoRoutes, boletoPublicRoutes } from '@/modules/boleto/routes/boleto.routes';
 import { authRoutes } from '@/modules/auth/routes/auth.routes';
 import { rotaRoutes } from '@/modules/rota/routes/rota.routes';
 
@@ -15,6 +15,7 @@ const globalRoutes = Router();
 
 // Public routes
 globalRoutes.use('/auth', authRoutes);
+globalRoutes.use('/boletos/public', boletoPublicRoutes);
 
 // Protected routes (require authentication)
 globalRoutes.use(authMiddleware);

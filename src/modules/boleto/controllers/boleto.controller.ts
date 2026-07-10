@@ -128,6 +128,22 @@ export class BoletoController {
     }
   }
 
+  async publicDownload(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const boleto = await this.boletoService.findById(req.params.id);
+
+      const filePath = resolveBoletoPath(boleto);
+
+      if (!fs.existsSync(filePath)) {
+        throw new BoletoFileNotFoundError(boleto.nome_arquivo);
+      }
+
+      return res.download(filePath, boleto.nome_arquivo);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const boletoCheck = await this.boletoService.findById(req.params.id);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1783692373974" clover="3.2.0">
-  <project timestamp="1783692373974" name="All files">
-    <metrics statements="348" coveredstatements="225" conditionals="180" coveredconditionals="68" methods="71" coveredmethods="43" elements="599" coveredelements="336" complexity="0" loc="348" ncloc="348" packages="24" files="24" classes="24"/>
+<coverage generated="1783693907713" clover="3.2.0">
+  <project timestamp="1783693907713" name="All files">
+    <metrics statements="355" coveredstatements="225" conditionals="182" coveredconditionals="68" methods="72" coveredmethods="43" elements="609" coveredelements="336" complexity="0" loc="355" ncloc="355" packages="24" files="24" classes="24"/>
     <package name="config">
       <metrics statements="17" coveredstatements="8" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
       <file name="multer.ts" path="C:\Users\guilherme.oliveira\Documents\Projetos-Backend\Integração-Cigam\Backend-Integracao\src\config\multer.ts">
@@ -76,9 +76,9 @@
       </file>
     </package>
     <package name="modules.boleto.controllers">
-      <metrics statements="88" coveredstatements="33" conditionals="42" coveredconditionals="11" methods="11" coveredmethods="4"/>
+      <metrics statements="95" coveredstatements="33" conditionals="44" coveredconditionals="11" methods="12" coveredmethods="4"/>
       <file name="boleto.controller.ts" path="C:\Users\guilherme.oliveira\Documents\Projetos-Backend\Integração-Cigam\Backend-Integracao\src\modules\boleto\controllers\boleto.controller.ts">
-        <metrics statements="88" coveredstatements="33" conditionals="42" coveredconditionals="11" methods="11" coveredmethods="4"/>
+        <metrics statements="95" coveredstatements="33" conditionals="44" coveredconditionals="11" methods="12" coveredmethods="4"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -146,11 +146,9 @@
         <line num="127" count="0" type="stmt"/>
         <line num="132" count="0" type="stmt"/>
         <line num="133" count="0" type="stmt"/>
-        <line num="134" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="135" count="0" type="stmt"/>
+        <line num="137" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="138" count="0" type="stmt"/>
-        <line num="139" count="0" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
         <line num="141" count="0" type="stmt"/>
         <line num="143" count="0" type="stmt"/>
         <line num="148" count="0" type="stmt"/>
@@ -159,14 +157,23 @@
         <line num="151" count="0" type="stmt"/>
         <line num="154" count="0" type="stmt"/>
         <line num="155" count="0" type="stmt"/>
+        <line num="156" count="0" type="stmt"/>
         <line num="157" count="0" type="stmt"/>
-        <line num="162" count="0" type="stmt"/>
-        <line num="163" count="0" type="stmt"/>
-        <line num="164" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="159" count="0" type="stmt"/>
+        <line num="164" count="0" type="stmt"/>
         <line num="165" count="0" type="stmt"/>
-        <line num="168" count="0" type="stmt"/>
-        <line num="169" count="0" type="stmt"/>
+        <line num="166" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
         <line num="171" count="0" type="stmt"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="178" count="0" type="stmt"/>
+        <line num="179" count="0" type="stmt"/>
+        <line num="180" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="181" count="0" type="stmt"/>
+        <line num="184" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
+        <line num="187" count="0" type="stmt"/>
       </file>
     </package>
     <package name="modules.boleto.dto">
