@@ -131,20 +131,31 @@ describe('Boleto Controller', () => {
     });
 
     it('should upload a PDF file successfully', async () => {
+      const fs = require('fs');
+      jest.spyOn(fs, 'mkdirSync').mockImplementation(() => {});
+      jest.spyOn(fs, 'renameSync').mockImplementation(() => {});
+      jest.spyOn(fs, 'unlinkSync').mockImplementation(() => {});
+
       const { BoletoController } = require('@/modules/boleto/controllers/boleto.controller');
       const controller = new BoletoController(
         require('@/shared/container').container.resolve('BoletoService')
       );
 
       mockReq = {
+        user: {
+          userId: 'user-123',
+          companyId: '550e8400-e29b-41d4-a716-446655440000',
+          email: 'teste@empresa.com',
+          role: 'ADMIN',
+        },
         file: {
           fieldname: 'file',
           originalname: 'boleto.pdf',
           encoding: '7bit',
           mimetype: 'application/pdf',
-          destination: 'src/uploads/pdfs/550e8400-e29b-41d4-a716-446655440000',
+          destination: 'src/uploads/temp',
           filename: '1234567890_abc.pdf',
-          path: 'src/uploads/pdfs/550e8400-e29b-41d4-a716-446655440000/1234567890_abc.pdf',
+          path: 'src/uploads/temp/1234567890_abc.pdf',
           size: 1024,
         } as Express.Multer.File,
         body: {
@@ -187,6 +198,12 @@ describe('Boleto Controller', () => {
       );
 
       mockReq = {
+        user: {
+          userId: 'user-123',
+          companyId: '550e8400-e29b-41d4-a716-446655440000',
+          email: 'teste@empresa.com',
+          role: 'ADMIN',
+        },
         params: { id: '123' },
       } as any;
 

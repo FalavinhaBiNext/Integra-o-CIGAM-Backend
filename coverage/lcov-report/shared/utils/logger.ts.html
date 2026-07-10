@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.58% </span>
+                <span class="strong">23.52% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/17</span>
+                <span class='fraction'>4/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">70.58% </span>
+                <span class="strong">23.52% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/17</span>
+                <span class='fraction'>4/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -125,21 +125,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -165,22 +165,22 @@ const stylize: Record&lt;LogLevel, (msg: string) =&gt; string&gt; = {
   debug: chalk.gray,
 };
 &nbsp;
-function log(level: LogLevel, message: string, ...args: unknown[]): void {
-  const timestamp = chalk.dim(new Date().toISOString());
-  const icon = icons[level];
-  const colorFn = stylize[level];
-  const label = level.toUpperCase().padEnd(7);
-  const formatted = colorFn(`${icon} [${label}] ${message}`);
+function <span class="fstat-no" title="function not covered" >log(</span>level: LogLevel, message: string, ...args: unknown[]): void {
+  const timestamp = <span class="cstat-no" title="statement not covered" >chalk.dim(new Date().toISOString());</span>
+  const icon = <span class="cstat-no" title="statement not covered" >icons[level];</span>
+  const colorFn = <span class="cstat-no" title="statement not covered" >stylize[level];</span>
+  const label = <span class="cstat-no" title="statement not covered" >level.toUpperCase().padEnd(7);</span>
+  const formatted = <span class="cstat-no" title="statement not covered" >colorFn(`${icon} [${label}] ${message}`);</span>
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (args.length &gt; 0) {
+<span class="cstat-no" title="statement not covered" >  if (args.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >    console.log(`${timestamp} ${formatted}`, ...args);</span>
   } else {
-    console.log(`${timestamp} ${formatted}`);
+<span class="cstat-no" title="statement not covered" >    console.log(`${timestamp} ${formatted}`);</span>
   }
 }
 &nbsp;
 export const logger = {
-  info: (message: string, ...args: unknown[]) =&gt; log('info', message, ...args),
+  info: <span class="fstat-no" title="function not covered" >(m</span>essage: string, ...args: unknown[]) =&gt; <span class="cstat-no" title="statement not covered" >log('info', message, ...args),</span>
   success: <span class="fstat-no" title="function not covered" >(m</span>essage: string, ...args: unknown[]) =&gt; <span class="cstat-no" title="statement not covered" >log('success', message, ...args),</span>
   warn: <span class="fstat-no" title="function not covered" >(m</span>essage: string, ...args: unknown[]) =&gt; <span class="cstat-no" title="statement not covered" >log('warn', message, ...args),</span>
   error: <span class="fstat-no" title="function not covered" >(m</span>essage: string, ...args: unknown[]) =&gt; <span class="cstat-no" title="statement not covered" >log('error', message, ...args),</span>
@@ -193,7 +193,7 @@ export const logger = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-30T19:06:48.064Z
+                at 2026-07-10T13:52:57.743Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

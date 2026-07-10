@@ -7,21 +7,20 @@ import { CreateBoletoDTO, UpdateBoletoDTO, BoletoResponseDTO } from '../dto/bole
 import { validateCreateBoleto, validateUpdateBoleto } from '../validators/boleto.validator';
 import { BoletoFileNotFoundError } from '../errors/boleto.errors';
 
+const TEMP_DIR = path.resolve(__dirname, '..', '..', '..', '..', 'uploads', 'temp');
 const UPLOADS_DIR = path.resolve(__dirname, '..', '..', '..', '..', 'uploads', 'pdfs');
 
 function resolveBoletoPath(boleto: { company_id: string; nome_arquivo: string }): string {
+  const newPath = path.join(UPLOADS_DIR, boleto.company_id, boleto.nome_arquivo);
+  if (fs.existsSync(newPath)) return newPath;
+
   const dirs = fs.readdirSync(UPLOADS_DIR);
   const match = dirs.find(d => d.endsWith(`(${boleto.company_id})`));
-
   if (match) {
-    const p = path.join(UPLOADS_DIR, match, boleto.nome_arquivo);
-    if (fs.existsSync(p)) return p;
+    return path.join(UPLOADS_DIR, match, boleto.nome_arquivo);
   }
 
-  const oldPath = path.join(UPLOADS_DIR, boleto.company_id, boleto.nome_arquivo);
-  if (fs.existsSync(oldPath)) return oldPath;
-
-  return path.join(UPLOADS_DIR, match || boleto.company_id, boleto.nome_arquivo);
+  return newPath;
 }
 
 @injectable()
@@ -80,9 +79,19 @@ export class BoletoController {
       }
 
       const validated = validateCreateBoleto(input);
+
+      const companyDir = path.join(UPLOADS_DIR, validated.company_id);
+      fs.mkdirSync(companyDir, { recursive: true });
+
+      const finalPath = path.join(companyDir, req.file.filename);
+      fs.renameSync(req.file.path, finalPath);
+
       const boleto = await this.boletoService.create(validated);
       return res.status(201).json(BoletoResponseDTO.fromEntity(boleto));
     } catch (error) {
+      if (req.file) {
+        try { fs.unlinkSync(req.file.path); } catch {}
+      }
       return next(error);
     }
   }
