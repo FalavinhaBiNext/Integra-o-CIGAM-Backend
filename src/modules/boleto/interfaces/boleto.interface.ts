@@ -5,6 +5,7 @@ export interface IBoletoRepository {
   findAll(): Promise<BoletoModel[]>;
   findById(id: string): Promise<BoletoModel | null>;
   findByCompanyId(companyId: string): Promise<BoletoModel[]>;
+  findByCompanyAndNumLancamento(companyId: string, numLancamento: string): Promise<BoletoModel | null>;
   create(data: CreateBoletoPersistenceDTO): Promise<BoletoModel>;
   update(id: string, data: UpdateBoletoPersistenceDTO): Promise<[number, BoletoModel[]]>;
   delete(id: string): Promise<number>;

@@ -26,6 +26,7 @@ jest.mock('@/shared/container', () => ({
             updated_at: new Date(),
           }),
           findByCompany: jest.fn().mockResolvedValue([]),
+          findByCompanyAndNumLancamento: jest.fn().mockResolvedValue(null),
           create: jest.fn().mockResolvedValue({
             id: '456',
             company_id: '550e8400-e29b-41d4-a716-446655440000',

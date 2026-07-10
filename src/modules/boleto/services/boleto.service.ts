@@ -34,6 +34,10 @@ export class BoletoService {
     return this.boletoRepository.findByCompanyId(companyId);
   }
 
+  async findByCompanyAndNumLancamento(companyId: string, numLancamento: string): Promise<BoletoModel | null> {
+    return this.boletoRepository.findByCompanyAndNumLancamento(companyId, numLancamento);
+  }
+
   async create(input: CreateBoletoInputDTO): Promise<BoletoModel> {
     const persistence: CreateBoletoPersistenceDTO = {
       company_id: input.company_id,

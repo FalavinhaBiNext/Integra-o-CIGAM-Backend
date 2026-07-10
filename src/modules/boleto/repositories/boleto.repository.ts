@@ -22,6 +22,12 @@ export class BoletoRepository implements IBoletoRepository {
     return this.model.findAll({ where: { company_id: companyId }, order: [['created_at', 'DESC']] });
   }
 
+  async findByCompanyAndNumLancamento(companyId: string, numLancamento: string): Promise<BoletoModel | null> {
+    return this.model.findOne({
+      where: { company_id: companyId, num_lancamento: numLancamento },
+    });
+  }
+
   async create(data: CreateBoletoPersistenceDTO): Promise<BoletoModel> {
     return this.model.create(data);
   }

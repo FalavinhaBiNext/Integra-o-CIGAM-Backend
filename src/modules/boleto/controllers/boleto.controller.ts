@@ -80,6 +80,19 @@ export class BoletoController {
 
       const validated = validateCreateBoleto(input);
 
+      const existing = await this.boletoService.findByCompanyAndNumLancamento(
+        validated.company_id,
+        validated.num_lancamento
+      );
+
+      if (existing) {
+        try { fs.unlinkSync(req.file.path); } catch {}
+        return res.status(200).json({
+          message: 'Boleto ja cadastrado.',
+          boleto: BoletoResponseDTO.fromEntity(existing),
+        });
+      }
+
       const companyDir = path.join(UPLOADS_DIR, validated.company_id);
       fs.mkdirSync(companyDir, { recursive: true });
 
