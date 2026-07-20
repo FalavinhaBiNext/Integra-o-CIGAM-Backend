@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { BoletoService } from '../services/boleto.service';
 import { CreateBoletoDTO, UpdateBoletoDTO, BoletoResponseDTO } from '../dto/boleto.dto';
-import { validateCreateBoleto, validateUpdateBoleto } from '../validators/boleto.validator';
+import { validateCreateBoleto, validateUpdateBoleto, validateUpdateRecebimento } from '../validators/boleto.validator';
 import { BoletoFileNotFoundError } from '../errors/boleto.errors';
 
 const TEMP_DIR = path.resolve(__dirname, '..', '..', '..', '..', 'uploads', 'temp');
@@ -183,6 +183,24 @@ export class BoletoController {
 
       await this.boletoService.alterAtivo(req.params.id);
       return res.status(204).send();
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async updateRecebimento(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const boletoCheck = await this.boletoService.findById(req.params.id);
+      if (req.user?.role !== 'SUPERADMIN' && req.user?.companyId !== boletoCheck.company_id) {
+        return res.status(403).json({ error: { message: 'Acesso negado. Este boleto pertence a outra empresa.' } });
+      }
+
+      const validated = validateUpdateRecebimento(req.body);
+      const boleto = await this.boletoService.update(req.params.id, {
+        data_recebimento: validated.data_recebimento,
+      });
+
+      return res.json(BoletoResponseDTO.fromEntity(boleto));
     } catch (error) {
       return next(error);
     }

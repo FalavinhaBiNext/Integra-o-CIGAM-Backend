@@ -48,3 +48,17 @@ export function validateUpdateBoleto(input: unknown) {
 
   return result.data;
 }
+
+export const updateRecebimentoSchema = z.object({
+  data_recebimento: z.string().min(1, 'A data de recebimento é obrigatória.'),
+});
+
+export function validateUpdateRecebimento(input: unknown) {
+  const result = updateRecebimentoSchema.safeParse(input);
+
+  if (!result.success) {
+    throw new ValidationError('Dados inválidos.', result.error.flatten());
+  }
+
+  return result.data;
+}

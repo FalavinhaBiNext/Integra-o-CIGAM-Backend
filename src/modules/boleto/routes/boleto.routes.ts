@@ -15,6 +15,7 @@ boletoRoutes.post('/upload', uploadBoleto.single('file'), boletoController.uploa
 boletoRoutes.put('/:id', boletoController.update.bind(boletoController));
 boletoRoutes.delete('/:id', boletoController.delete.bind(boletoController));
 boletoRoutes.patch('/:id/ativo', boletoController.alterAtivo.bind(boletoController));
+boletoRoutes.patch('/:id/recebimento', boletoController.updateRecebimento.bind(boletoController));
 
 const boletoPublicRoutes = Router();
 boletoPublicRoutes.get('/download/:id', boletoController.publicDownload.bind(boletoController));

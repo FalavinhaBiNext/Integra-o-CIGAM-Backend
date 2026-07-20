@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">35.64% </span>
+                <span class="strong">33.02% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/101</span>
+                <span class='fraction'>36/109</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">22.91% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>11/44</span>
+                <span class='fraction'>11/48</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">30.76% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/12</span>
+                <span class='fraction'>4/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">34.73% </span>
+                <span class="strong">32.03% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>33/95</span>
+                <span class='fraction'>33/103</span>
             </div>
         
             
@@ -253,7 +253,25 @@
 <a name='L188'></a><a href='#L188'>188</a>
 <a name='L189'></a><a href='#L189'>189</a>
 <a name='L190'></a><a href='#L190'>190</a>
-<a name='L191'></a><a href='#L191'>191</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -443,13 +461,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { inject, injectable } from 'tsyringe';
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
 import { BoletoService } from '../services/boleto.service';
 import { CreateBoletoDTO, UpdateBoletoDTO, BoletoResponseDTO } from '../dto/boleto.dto';
-import { validateCreateBoleto, validateUpdateBoleto } from '../validators/boleto.validator';
+import { validateCreateBoleto, validateUpdateBoleto, validateUpdateRecebimento } from '../validators/boleto.validator';
 import { BoletoFileNotFoundError } from '../errors/boleto.errors';
 &nbsp;
 const TEMP_DIR = path.resolve(__dirname, '..', '..', '..', '..', 'uploads', 'temp');
@@ -632,6 +668,24 @@ export class BoletoController {
 <span class="cstat-no" title="statement not covered" >      return next(error);</span>
     }
   }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  async </span>updateRecebimento(req: Request, res: Response, next: NextFunction): Promise&lt;Response | void&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const boletoCheck = <span class="cstat-no" title="statement not covered" >await this.boletoService.findById(req.params.id);</span>
+<span class="cstat-no" title="statement not covered" >      if (req.user?.role !== 'SUPERADMIN' &amp;&amp; req.user?.companyId !== boletoCheck.company_id) {</span>
+<span class="cstat-no" title="statement not covered" >        return res.status(403).json({ error: { message: 'Acesso negado. Este boleto pertence a outra empresa.' } });</span>
+      }
+&nbsp;
+      const validated = <span class="cstat-no" title="statement not covered" >validateUpdateRecebimento(req.body);</span>
+      const boleto = <span class="cstat-no" title="statement not covered" >await this.boletoService.update(req.params.id, {</span>
+        data_recebimento: validated.data_recebimento,
+      });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return res.json(BoletoResponseDTO.fromEntity(boleto));</span>
+    } catch (error) {
+<span class="cstat-no" title="statement not covered" >      return next(error);</span>
+    }
+  }
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -640,7 +694,7 @@ export class BoletoController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T14:31:47.638Z
+                at 2026-07-16T12:40:44.590Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
